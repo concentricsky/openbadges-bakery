@@ -1,0 +1,5 @@
+dist
+badgecheck.egg-info
+env*
+env
+.DS_STORE
