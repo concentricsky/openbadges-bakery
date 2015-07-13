@@ -1,5 +1,5 @@
 dist
-badgecheck.egg-info
+openbadges_bakery.egg-info
 env*
 env
 .DS_STORE
