@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='openbadges_bakery',
-    version='0.1.3',
+    version='0.1.4',
     packages=['openbadges_bakery'],
     include_package_data=True,
     license='aGPL License',
@@ -34,6 +34,6 @@ setup(
         'Intended Audience :: Developers'
     ],
     install_requires=[
-        'django == 1.7.1'
+        'django >= 1.7'
     ],
 )
