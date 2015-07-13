@@ -1,5 +1,4 @@
 include LICENSE
 include README.rst
 recursive-include docs *
-recursive-include openbadges_bakery
-recursive-include openbadges_bakery/testfiles
+recursive-include openbadges_bakery/testfiles *
