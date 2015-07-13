@@ -8,8 +8,8 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='openbadges-bakery',
-    version='0.1',
+    name='openbadges_bakery',
+    version='0.1.1',
     packages=['openbadges_bakery'],
     include_package_data=True,
     license='aGPL License',
