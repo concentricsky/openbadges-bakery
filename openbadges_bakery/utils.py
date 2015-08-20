@@ -1,20 +1,16 @@
 import re
+from xml.dom.minidom import parseString
 
 import png_bakery
 
 
-PNG_SIGNATURE = [137, 80, 78, 71, 13, 10, 26, 10]
-SVG_SIGNATURE = 'http://www.w3.org/2000/svg'
-HEADER_LENGTH = 256
-
-
 def check_image_type(imageFile):
-    header = imageFile.read(HEADER_LENGTH)
-    if [ord(char) for char in header[:len(PNG_SIGNATURE)]] == PNG_SIGNATURE:
+    if imageFile.read(8) == '\x89PNG\r\n\x1a\n':
         return 'PNG'
-    elif re.compile(SVG_SIGNATURE).search(str(header)):
+    imageFile.seek(0)
+    # TODO: Use xml library to more accurately detect SVG documents
+    if re.search('<svg', imageFile.read(256)):
         return 'SVG'
-
 
 def unbake(imageFile):
     """
@@ -25,8 +21,7 @@ def unbake(imageFile):
     if image_type == 'PNG':
         return png_bakery.unbake(imageFile)
     elif image_type == 'SVG':
-        raise NotImplementedError("SVG UNBAKING COMING SOON.")
-
+        return svg_bakery.unbake(imageFile)
 
 def bake(imageFile, assertion_json_string):
     """
@@ -37,4 +32,4 @@ def bake(imageFile, assertion_json_string):
     if image_type == 'PNG':
         return png_bakery.bake(imageFile, assertion_json_string)
     elif image_type == 'SVG':
-        raise NotImplementedError("SVG BAKING COMING SOON.")
+        return svg_bakery.bake(imageFile, assertion_json_string)

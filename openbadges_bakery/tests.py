@@ -7,7 +7,7 @@ from django.test import TestCase
 import png_bakery
 import utils
 
-test_assertion = {
+png_assertion = {
     "uid": "123",
     "issuedOn": "2015-04-01",
     "badge": "http://example.org/badge1",
@@ -19,6 +19,21 @@ test_assertion = {
         "type": "hosted",
         "url": "http://example.org/badgeinstance1"
     }
+}
+
+svg_assertion = {
+    "uid": "abcdef12345",
+    "identity": {
+        "recipient": "sha256$cbb08ce07dd7345341b9358abb810d29eb790fed",
+        "type": "email",
+        "hashed": True
+    },
+    "verify": {
+        "type": "hosted",
+        "url": "https://example.org/assertion.json"
+    },
+    "issuedOn": "2013-11-05",
+    "badge": "https://example.org/badge.json"
 }
 
 
@@ -43,16 +58,39 @@ class PNGBakingTests(TestCase):
                                'testfiles', 'public_domain_heart.png'
                                )) as image:
 
-            return_file = png_bakery.bake(image, json.dumps(test_assertion))
+            return_file = png_bakery.bake(image, json.dumps(png_assertion))
             return_file.open('r')
             self.assertEqual(utils.check_image_type(return_file), 'PNG')
             return_file.close()
             return_file.open('r')
-            self.assertEqual(png_bakery.unbake(return_file), json.dumps(test_assertion))
+            self.assertEqual(png_bakery.unbake(return_file),
+                             json.dumps(png_assertion))
 
     def test_unbake_png(self):
         with open(os.path.join(os.path.dirname(__file__),
                                'testfiles', 'baked_heart.png'
                                )) as image:
             assertion = png_bakery.unbake(image)
-            self.assertEqual(json.loads(assertion), test_assertion)
+            self.assertEqual(json.loads(assertion), png_assertion)
+
+
+class SVGBakingTests(TestCase):
+    def test_bake_svg(self):
+        with open(os.path.join(os.path.dirname(__file__),
+                               'testfiles', 'unbaked_example.svg'
+                               )) as image:
+
+            return_file = utils.bake(image, json.dumps(svg_assertion))
+            return_file.open('r')
+            self.assertEqual(utils.check_image_type(return_file), 'SVG')
+            return_file.open('r')
+            self.assertEqual(utils.unbake(return_file),
+                             json.dumps(svg_assertion))
+
+
+    def test_unbake_svg(self):
+        with open(os.path.join(os.path.dirname(__file__),
+                               'testfiles', 'baked_example.svg'
+                               )) as image:
+            assertion = utils.unbake(image)
+            self.assertEqual(json.loads(assertion), svg_assertion)
