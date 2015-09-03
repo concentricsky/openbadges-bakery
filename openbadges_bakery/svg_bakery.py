@@ -47,8 +47,9 @@ def unbake(imageFile):
     svg_doc = parseString(imageFile.read())
 
     assertion_node = svg_doc.getElementsByTagName("openbadges:assertion")[0]
+    character_data = None
     for node in assertion_node.childNodes:
         if node.nodeType == node.CDATA_SECTION_NODE:
-            data = node.nodeValue
+            character_data = node.nodeValue
     url = assertion_node.attributes['verify'].nodeValue.encode('utf-8')
-    return data
+    return character_data or url
