@@ -10,7 +10,7 @@ def bake(imageFile, assertion_string):
     imageFile.close()
 
     assertion_node = svg_doc.createElement('openbadges:assertion')
-    assertion_node.setAttribute(_get_verify_string(assertion_string))
+    assertion_node.setAttribute('verify', _get_verify_string(assertion_string))
 
     character_data = svg_doc.createCDATASection(assertion_string)
     assertion_node.appendChild(character_data)
