@@ -3,7 +3,7 @@
 Open Badges Bakery
 =====
 
-This package contains the utilities needed to "bake" Open Badges metadata into PNG or SVG (coming soon) image files or extract ('unbake') metada from such images.
+This package contains the utilities needed to "bake" Open Badges metadata into PNG or SVG image files or extract ('unbake') metada from such images.
 
 This Open Badges Bakery is produced by Concentric Sky. https://concentricsky.com
 
