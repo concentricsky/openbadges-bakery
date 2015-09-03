@@ -10,10 +10,7 @@ def bake(imageFile, assertion_string):
     imageFile.close()
 
     assertion_node = svg_doc.createElement('openbadges:assertion')
-    assertion_node.setAttribute('verify', _get_verify_string(assertion_string))
-
-    character_data = svg_doc.createCDATASection(assertion_string)
-    assertion_node.appendChild(character_data)
+    assertion_node = _populate_assertion_node(assertion_node, assertion_string)
 
     svg_body = svg_doc.getElementsByTagName('svg')[0]
     svg_body.setAttribute('xmlns:openbadges', "http://openbadges.org")
@@ -24,7 +21,7 @@ def bake(imageFile, assertion_string):
     return new_file
 
 
-def _get_verify_string(assertion_string):
+def _populate_assertion_node(assertion_node, assertion_string):
     try:
         assertion = json.loads(assertion_string)
     except ValueError:
@@ -33,12 +30,17 @@ def _get_verify_string(assertion_string):
     if assertion:
         verify_url = assertion.get('verify', {}).get('url')
         if verify_url:
-            return verify_url
+            assertion_node.setAttribute('verify', verify_url)
         else:
             # TODO: Support 0.5 badges
             pass
+        character_data = svg_doc.createCDATASection(assertion_string)
+        assertion_node.appendChild(character_data)
 
-    return assertion_string
+    else:
+        assertion_node.setAttribute('verify', assertion_string)
+
+    return assertion_node
 
 
 def unbake(imageFile):
