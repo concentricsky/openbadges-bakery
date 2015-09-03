@@ -28,7 +28,7 @@ def bake(imageFile, assertion_json_string):
     Embeds a serialized representation of a badge instance in an image file.
     """
     image_type = check_image_type(imageFile)
-    imageFile.seek(0)  # reset pointer to the beginning of the file
+    imageFile.seek(0)
     if image_type == 'PNG':
         return png_bakery.bake(imageFile, assertion_json_string)
     elif image_type == 'SVG':

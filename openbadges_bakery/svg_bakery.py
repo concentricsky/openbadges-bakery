@@ -1,16 +1,18 @@
+import json
+
 from xml.dom.minidom import parseString
 
 from django.core.files.base import ContentFile
 
 
-def bake(imageFile, assertion_json_string):
+def bake(imageFile, assertion_string):
     svg_doc = parseString(imageFile.read())
     imageFile.close()
 
     assertion_node = svg_doc.createElement('openbadges:assertion')
-    # TODO: Provide valid verify document
-    assertion_node.setAttribute('verify', 'http://example.com/badge.json')
-    character_data = svg_doc.createCDATASection(assertion_json_string)
+    assertion_node.setAttribute(_get_verify_string(assertion_string))
+
+    character_data = svg_doc.createCDATASection(assertion_string)
     assertion_node.appendChild(character_data)
 
     svg_body = svg_doc.getElementsByTagName('svg')[0]
@@ -20,6 +22,23 @@ def bake(imageFile, assertion_json_string):
     new_file = ContentFile(svg_doc.toxml('utf-8'))
     new_file.close()
     return new_file
+
+
+def _get_verify_string(assertion_string):
+    try:
+        assertion = json.loads(assertion_string)
+    except ValueError:
+        assertion = None
+
+    if assertion:
+        verify_url = assertion.get('verify', {}).get('url')
+        if verify_url:
+            return verify_url
+        else:
+            # TODO: Support 0.5 badges
+            pass
+
+    return assertion_string
 
 
 def unbake(imageFile):
