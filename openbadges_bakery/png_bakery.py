@@ -52,10 +52,10 @@ def baked_chunks(original_chunks, badge_chunk):
             return False
         return True
 
-    first_slice = itertools.islice(original_chunks, 1)
+    first_slice = original_chunks.next()
     last_slice = itertools.ifilter(
         is_not_previous_assertion,
-        itertools.islice(original_chunks, 1, None)
+        original_chunks
     )
 
-    return itertools.chain(first_slice, [badge_chunk], last_slice)
+    return itertools.chain([first_slice], [badge_chunk], last_slice)

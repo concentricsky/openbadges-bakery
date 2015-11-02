@@ -9,14 +9,14 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='openbadges_bakery',
-    version='0.2.0',
+    version='0.3.1',
     packages=['openbadges_bakery'],
     include_package_data=True,
     license='aGPL License',
     description='A python utility for baking and extracting Open Badges metadata from images.',
     long_description=README,
     url='http://info.badgr.io/',
-    author='Nate Otto',
+    author='Concentric Sky',
     author_email='notto@concentricsky.com',
     classifiers=[
         'Environment :: Console',
