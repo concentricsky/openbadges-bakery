@@ -17,7 +17,8 @@ def bake(imageFile, assertion_string):
     svg_body.setAttribute('xmlns:openbadges', "http://openbadges.org")
     svg_body.insertBefore(assertion_node, svg_body.firstChild)
 
-    new_file = ContentFile(svg_doc.toxml('utf-8'))
+    filename = '%s.svg' % hashlib.md5(str(assertion_string)).hexdigest()
+    new_file = ContentFile(svg_doc.toxml('utf-8'), name=filename)
     new_file.close()
     return new_file
 
