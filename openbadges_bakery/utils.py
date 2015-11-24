@@ -1,7 +1,7 @@
 import re
 from xml.dom.minidom import parseString
 
-import png_bakery
+import png_bakery, svg_bakery
 
 
 def check_image_type(imageFile):
