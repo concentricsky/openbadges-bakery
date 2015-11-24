@@ -1,3 +1,4 @@
+import hashlib
 import json
 
 from xml.dom.minidom import parseString
