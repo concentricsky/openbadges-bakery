@@ -1,3 +1,4 @@
+import hashlib
 import json
 
 from xml.dom.minidom import parseString
@@ -10,18 +11,20 @@ def bake(imageFile, assertion_string):
     imageFile.close()
 
     assertion_node = svg_doc.createElement('openbadges:assertion')
-    assertion_node = _populate_assertion_node(assertion_node, assertion_string)
+    assertion_node = _populate_assertion_node(assertion_node, assertion_string,
+                                              svg_doc)
 
     svg_body = svg_doc.getElementsByTagName('svg')[0]
     svg_body.setAttribute('xmlns:openbadges', "http://openbadges.org")
     svg_body.insertBefore(assertion_node, svg_body.firstChild)
 
-    new_file = ContentFile(svg_doc.toxml('utf-8'))
+    filename = '%s.svg' % hashlib.md5(str(assertion_string)).hexdigest()
+    new_file = ContentFile(svg_doc.toxml('utf-8'), name=filename)
     new_file.close()
     return new_file
 
 
-def _populate_assertion_node(assertion_node, assertion_string):
+def _populate_assertion_node(assertion_node, assertion_string, svg_doc):
     try:
         assertion = json.loads(assertion_string)
     except ValueError:
