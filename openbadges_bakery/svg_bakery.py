@@ -10,7 +10,8 @@ def bake(imageFile, assertion_string):
     imageFile.close()
 
     assertion_node = svg_doc.createElement('openbadges:assertion')
-    assertion_node = _populate_assertion_node(assertion_node, assertion_string)
+    assertion_node = _populate_assertion_node(assertion_node, assertion_string,
+                                              svg_doc)
 
     svg_body = svg_doc.getElementsByTagName('svg')[0]
     svg_body.setAttribute('xmlns:openbadges', "http://openbadges.org")
@@ -21,7 +22,7 @@ def bake(imageFile, assertion_string):
     return new_file
 
 
-def _populate_assertion_node(assertion_node, assertion_string):
+def _populate_assertion_node(assertion_node, assertion_string, svg_doc):
     try:
         assertion = json.loads(assertion_string)
     except ValueError:
