@@ -3,3 +3,4 @@ openbadges_bakery.egg-info
 env*
 env
 .DS_STORE
+build/*
