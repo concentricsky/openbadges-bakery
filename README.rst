@@ -51,12 +51,12 @@ that contains the data.
 
 .. code:: python
 
-    from badgecheck import bake
+    from openbadges_bakery import bake
     output_file = bake(input_file, assertion_json_string)
 
 To unbake a badge, pass in an open file as ``input_file``:
 
 .. code:: python
 
-    from badgecheck import unbake
+    from openbadges_bakery import unbake
     output_file = unbake(input_file)
