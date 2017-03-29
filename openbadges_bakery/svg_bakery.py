@@ -1,12 +1,12 @@
+import codecs
 import hashlib
 import json
-
+from tempfile import NamedTemporaryFile
 from xml.dom.minidom import parseString
 
-from django.core.files.base import ContentFile
 
+def bake(imageFile, assertion_string, new_file=None):
 
-def bake(imageFile, assertion_string):
     svg_doc = parseString(imageFile.read())
     imageFile.close()
 
@@ -18,9 +18,11 @@ def bake(imageFile, assertion_string):
     svg_body.setAttribute('xmlns:openbadges', "http://openbadges.org")
     svg_body.insertBefore(assertion_node, svg_body.firstChild)
 
-    filename = '%s.svg' % hashlib.md5(str(assertion_string)).hexdigest()
-    new_file = ContentFile(svg_doc.toxml('utf-8'), name=filename)
-    new_file.close()
+    if new_file is None:
+        new_file = NamedTemporaryFile(suffix='.png')
+
+    new_file.write(svg_doc.toxml('utf-8'))
+    new_file.seek(0)
     return new_file
 
 

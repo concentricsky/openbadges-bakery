@@ -4,32 +4,32 @@ from xml.dom.minidom import parseString
 import png_bakery, svg_bakery
 
 
-def check_image_type(imageFile):
-    if imageFile.read(8) == '\x89PNG\r\n\x1a\n':
+def check_image_type(image_file):
+    if image_file.read(8) == '\x89PNG\r\n\x1a\n':
         return 'PNG'
-    imageFile.seek(0)
+    image_file.seek(0)
     # TODO: Use xml library to more accurately detect SVG documents
-    if re.search('<svg', imageFile.read(256)):
+    if re.search('<svg', image_file.read(256)):
         return 'SVG'
 
-def unbake(imageFile):
+def unbake(image_file):
     """
     Return the openbadges content contained in a baked image.
     """
-    image_type = check_image_type(imageFile)
-    imageFile.seek(0)
+    image_type = check_image_type(image_file)
+    image_file.seek(0)
     if image_type == 'PNG':
-        return png_bakery.unbake(imageFile)
+        return png_bakery.unbake(image_file)
     elif image_type == 'SVG':
-        return svg_bakery.unbake(imageFile)
+        return svg_bakery.unbake(image_file)
 
-def bake(imageFile, assertion_json_string):
+def bake(image_file, assertion_json_string, output_file=None):
     """
     Embeds a serialized representation of a badge instance in an image file.
     """
-    image_type = check_image_type(imageFile)
-    imageFile.seek(0)
+    image_type = check_image_type(image_file)
+    image_file.seek(0)
     if image_type == 'PNG':
-        return png_bakery.bake(imageFile, assertion_json_string)
+        return png_bakery.bake(image_file, assertion_json_string, output_file)
     elif image_type == 'SVG':
-        return svg_bakery.bake(imageFile, assertion_json_string)
+        return svg_bakery.bake(image_file, assertion_json_string, output_file)

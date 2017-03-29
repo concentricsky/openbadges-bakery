@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='openbadges_bakery',
-    version='0.4',
+    version='1.0.0b0',
     packages=['openbadges_bakery'],
     include_package_data=True,
     license='aGPL License',
@@ -21,7 +21,6 @@ setup(
     classifiers=[
         'Environment :: Console',
         'Development Status :: 3 - Alpha',
-        'Framework :: Django',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',
         'Operating System :: OS Independent',
@@ -34,6 +33,10 @@ setup(
         'Intended Audience :: Developers'
     ],
     install_requires=[
-        'django >= 1.7'
+        'Click >= 6.6'
     ],
+    entry_points="""
+        [console_scripts]
+        bakery=openbadges_bakery.cli:cli
+    """
 )

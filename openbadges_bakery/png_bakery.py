@@ -1,10 +1,10 @@
+import codecs
 import hashlib
 import itertools
 import os.path
 import png
 import re
-
-from django.core.files.base import ContentFile
+from tempfile import NamedTemporaryFile
 
 
 def unbake(imageFile):
@@ -24,21 +24,21 @@ def unbake(imageFile):
             return content.split('\x00')[1]
 
 
-def bake(imageFile, assertion_json_string):
+def bake(imageFile, assertion_string, newfile=None):
     """
     Embeds a serialized representation of a badge instance in a PNG image file.
     """
+    encoded_assertion_string = codecs.getwriter('utf-8')(assertion_string)
     reader = png.Reader(file=imageFile)
 
-    output_filename = '%s.png' % hashlib.md5(str(assertion_json_string)).hexdigest()
+    if newfile is None:
+        newfile = NamedTemporaryFile(suffix='.png')
 
-    newfile = ContentFile("", name=output_filename)
-    newfile.open()
     chunkheader = 'openbadges\x00\x00\x00\x00\x00'
-    badge_chunk = ('iTXt', bytes(chunkheader + assertion_json_string))
+    badge_chunk = ('iTXt', bytes(chunkheader + encoded_assertion_string.stream))
     png.write_chunks(newfile, baked_chunks(reader.chunks(), badge_chunk))
 
-    newfile.close()
+    newfile.seek(0)
     return newfile
 
 

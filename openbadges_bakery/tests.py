@@ -2,7 +2,7 @@ import json
 import os
 import os.path
 
-from django.test import TestCase
+from unittest import TestCase
 
 import png_bakery
 import utils
@@ -59,10 +59,8 @@ class PNGBakingTests(TestCase):
                                )) as image:
 
             return_file = png_bakery.bake(image, json.dumps(png_assertion))
-            return_file.open('r')
             self.assertEqual(utils.check_image_type(return_file), 'PNG')
-            return_file.close()
-            return_file.open('r')
+            return_file.seek(0)
             self.assertEqual(png_bakery.unbake(return_file),
                              json.dumps(png_assertion))
 
@@ -81,9 +79,8 @@ class SVGBakingTests(TestCase):
                                )) as image:
 
             return_file = utils.bake(image, json.dumps(svg_assertion))
-            return_file.open('r')
             self.assertEqual(utils.check_image_type(return_file), 'SVG')
-            return_file.open('r')
+            return_file.seek(0)
             self.assertEqual(utils.unbake(return_file),
                              json.dumps(svg_assertion))
 
