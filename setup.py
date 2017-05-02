@@ -33,7 +33,8 @@ setup(
         'Intended Audience :: Developers'
     ],
     install_requires=[
-        'Click >= 6.6'
+        'Click >= 6.6',
+        'pypng >= 0.0.18',
     ],
     entry_points="""
         [console_scripts]
