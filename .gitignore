@@ -5,3 +5,4 @@ env
 .DS_STORE
 build
 .cache
+.idea
