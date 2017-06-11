@@ -1,5 +1,6 @@
 import click
-import utils
+
+from . import utils
 
 
 @click.group()

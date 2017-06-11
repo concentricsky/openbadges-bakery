@@ -4,8 +4,8 @@ import os.path
 
 from unittest import TestCase
 
-import png_bakery
-import utils
+from . import png_bakery
+from . import utils
 
 png_assertion = {
     "uid": "123",
