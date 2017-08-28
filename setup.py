@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='openbadges_bakery',
-    version='1.0.0b3',
+    version='1.0.0b4',
     packages=['openbadges_bakery'],
     include_package_data=True,
     license='Apache License 2.0',
