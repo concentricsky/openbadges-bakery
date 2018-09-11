@@ -5,6 +5,7 @@ import os
 import os.path
 
 from unittest import TestCase
+from xml.dom.minidom import parseString
 
 from . import png_bakery
 from . import utils
@@ -83,13 +84,39 @@ class SVGBakingTests(TestCase):
             return_file = utils.bake(image, json.dumps(svg_assertion))
             self.assertEqual(utils.check_image_type(return_file), 'SVG')
             return_file.seek(0)
-            self.assertEqual(utils.unbake(return_file),
-                             json.dumps(svg_assertion))
-
+            self.assertEqual(utils.unbake(return_file), svg_assertion['verify']['url'])
 
     def test_unbake_svg(self):
         with open(os.path.join(os.path.dirname(__file__),
                                'testfiles', 'baked_example.svg'
                                )) as image:
-            assertion = utils.unbake(image)
-            self.assertEqual(json.loads(assertion), svg_assertion)
+            verify_url = utils.unbake(image)
+            self.assertEqual(verify_url, svg_assertion['verify']['url'])
+
+    def test_svg_roundtrip_hosted(self):
+        with open(os.path.join(os.path.dirname(__file__),
+                               'testfiles', 'unbaked_example.svg'
+                               )) as image:
+
+            svg_string = json.dumps(svg_assertion)
+            return_file = utils.bake(image, svg_string)
+            self.assertEqual(utils.check_image_type(return_file), 'SVG')
+            return_file.seek(0)
+            self.assertEqual(utils.unbake(return_file), svg_assertion['verify']['url'])
+
+        return_file.seek(0)
+        baked_xml = parseString(return_file.read())
+        assertion_node = baked_xml.getElementsByTagName("openbadges:assertion")[0]
+        self.assertEqual(assertion_node.attributes['verify'].value, svg_assertion['verify']['url'])
+
+    def test_svg_roundtrip_signed(self):
+        signed_string = 'eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk'
+
+        with open(os.path.join(os.path.dirname(__file__),
+                               'testfiles', 'unbaked_example.svg'
+                               )) as image:
+
+            return_file = utils.bake(image, signed_string)
+
+        return_file.seek(0)
+        self.assertEqual(utils.unbake(return_file), signed_string)

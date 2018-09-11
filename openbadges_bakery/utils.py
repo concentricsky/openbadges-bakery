@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 
 import re
-from xml.dom.minidom import parseString
 
 from . import png_bakery, svg_bakery
 
@@ -14,6 +13,7 @@ def check_image_type(image_file):
     if re.search(b'<svg', image_file.read(256)):
         return 'SVG'
 
+
 def unbake(image_file):
     """
     Return the openbadges content contained in a baked image.
@@ -24,6 +24,7 @@ def unbake(image_file):
         return png_bakery.unbake(image_file)
     elif image_type == 'SVG':
         return svg_bakery.unbake(image_file)
+
 
 def bake(image_file, assertion_json_string, output_file=None):
     """
