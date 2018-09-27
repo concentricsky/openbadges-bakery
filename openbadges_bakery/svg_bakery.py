@@ -4,7 +4,7 @@ import codecs
 import hashlib
 import json
 from tempfile import NamedTemporaryFile
-from xml.dom.minidom import parseString
+from defusedxml.minidom import parseString
 
 
 def bake(imageFile, assertion_string, new_file=None):
