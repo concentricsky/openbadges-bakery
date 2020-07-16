@@ -24,7 +24,7 @@ def unbake(imageFile):
         if chunktype == b'iTXt' and content.startswith(b'openbadges\x00'):
             return re.sub(b'openbadges[\x00]+', b'', content).decode('utf8')
         elif chunktype == b'tEXt' and content.startswith(b'openbadges\x00'):
-            return content.split('\x00')[1].decode('utf8')
+            return content.split(b'\x00')[1].decode('utf8')
 
 
 def bake(imageFile, assertion_string, newfile=None):
