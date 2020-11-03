@@ -21,7 +21,7 @@ def bake(imageFile, assertion_string, new_file=None):
     svg_body.insertBefore(assertion_node, svg_body.firstChild)
 
     if new_file is None:
-        new_file = NamedTemporaryFile(suffix='.png')
+        new_file = NamedTemporaryFile(suffix='.svg')
 
     new_file.write(svg_doc.toxml('utf-8'))
     new_file.seek(0)
@@ -58,5 +58,6 @@ def unbake(imageFile):
     for node in assertion_node.childNodes:
         if node.nodeType == node.CDATA_SECTION_NODE:
             character_data = node.nodeValue
-    url = assertion_node.attributes['verify'].nodeValue.encode('utf-8')
+    if 'verify' in assertion_node.attributes:
+        url = assertion_node.attributes['verify'].nodeValue.encode('utf-8')
     return character_data or url
