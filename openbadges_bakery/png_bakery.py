@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 import codecs
 import hashlib
@@ -21,10 +21,10 @@ def unbake(imageFile):
 
     reader = png.Reader(file=imageFile)
     for chunktype, content in reader.chunks():
-        if chunktype == 'iTXt' and content.startswith(b'openbadges\x00'):
+        if chunktype == b'iTXt' and content.startswith(b'openbadges\x00'):
             return re.sub(b'openbadges[\x00]+', b'', content).decode('utf8')
-        elif chunktype == 'tEXt' and content.startswith(b'openbadges\x00'):
-            return content.split('\x00')[1].decode('utf8')
+        elif chunktype == b'tEXt' and content.startswith(b'openbadges\x00'):
+            return content.split(b'\x00')[1].decode('utf8')
 
 
 def bake(imageFile, assertion_string, newfile=None):
@@ -39,7 +39,7 @@ def bake(imageFile, assertion_string, newfile=None):
 
     chunkheader = b'openbadges\x00\x00\x00\x00\x00'
     chunk_content = chunkheader + encoded_assertion_string.stream.encode('utf-8')
-    badge_chunk = ('iTXt', chunk_content)
+    badge_chunk = (b'iTXt', chunk_content)
     png.write_chunks(newfile, baked_chunks(reader.chunks(), badge_chunk))
 
     newfile.seek(0)
@@ -57,9 +57,9 @@ def baked_chunks(original_chunks, badge_chunk):
         return True
 
     first_slice = next(original_chunks)
-    last_slice = filter(
+    last_slice = list(filter(
         is_not_previous_assertion,
         original_chunks
-    )
+    ))
 
     return itertools.chain([first_slice], [badge_chunk], last_slice)
