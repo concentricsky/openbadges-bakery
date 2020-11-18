@@ -34,7 +34,8 @@ setup(
     ],
     install_requires=[
         'Click >= 6.6',
-        'pypng==0.0.20'
+        'pypng==0.0.20',
+        'defusedxml==0.5.0'
     ],
     entry_points="""
         [console_scripts]
