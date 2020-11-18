@@ -18,7 +18,7 @@ def bake(input_file, output_file, data):
 	"""
 	This command bakes Open Badges data into a file and saves
 	the result to an output file.
-	
+
 	Positional Arguments:
 
 	\b
@@ -49,7 +49,7 @@ def unbake(input_file, output_file):
 	  Output filename:   If file exists, it will be overwritten.
 	"""
 	click.echo('')
-	output_file.write(utils.unbake(input_file))
+	output_file.write(utils.unbake(input_file).encode('utf8'))
 	click.echo('\n')
 
 
