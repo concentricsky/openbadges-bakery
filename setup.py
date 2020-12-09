@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='openbadges_bakery',
-    version='1.0.1',
+    version='1.2.4',
     packages=['openbadges_bakery'],
     include_package_data=True,
     license='Apache License 2.0',
@@ -27,15 +27,16 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Education',
         'Topic :: Utilities',
         'Intended Audience :: Developers'
     ],
     install_requires=[
-        'Click >= 6.6',
-        'pypng==0.0.18',
-        'rfc3986==0.4.1',
+        'Click>=6.6',
+        'pypng>=0.0.20',
+        'defusedxml>=0.6.0,<1.0'
     ],
     entry_points="""
         [console_scripts]
