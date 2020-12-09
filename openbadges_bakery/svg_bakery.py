@@ -89,14 +89,8 @@ def unbake(image_file):
     for node in assertion_node.childNodes:
         if node.nodeType == node.CDATA_SECTION_NODE:
             character_data = node.nodeValue
-<<<<<<< HEAD
     try:
         verification_data = assertion_node.attributes['verify'].nodeValue.encode('utf-8')
     except KeyError:
         pass
     return verification_data or character_data
-=======
-    if 'verify' in assertion_node.attributes:
-        url = assertion_node.attributes['verify'].nodeValue.encode('utf-8')
-    return character_data or url
->>>>>>> 846c8dc8282992208bf21b1ad9e782a2f59545a0
